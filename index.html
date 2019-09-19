@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>FreeFill</title>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.12/esri/themes/light/main.css"
+    />
+    <link
+    rel="icon"
+      type="image/ico"
+      href="https://raleighnc.gov/cor-layout/content/static/styles/images/favicon.ico"
+    />
+
+  <script src="http://js.arcgis.com/4.12/"></script>
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <script>
+      require([
+        "esri/Map",
+        "esri/layers/FeatureLayer",
+        "esri/views/MapView",
+        "esri/geometry/geometryEngine"
+      ], function(Map, FeatureLayer, MapView, geometryEngine) {
+        // Create the Map
+        var map = new Map({
+          basemap: "gray"
+        });
+
+        // Create the MapView
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-78.638, 35.779],
+          zoom: 12
+        });
+
+        var iFilledAction = {
+          title: "I Filled Up!",
+          id: "fill-this",
+          image:
+            //"https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/live/Measure_Distance16.png"
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvVe3mBg6QhfAgUskwB78LQ89K4PBYVLd2q8Az_zbaHwfbDxS3"
+        };
+       
+
+        var template = {
+          // autocasts as new PopupTemplate()
+          title: "{SiteName}",
+          content: "Hours: {FillTime}",
+          actions: [iFilledAction]
+        };
+
+        var featureLayer = new FeatureLayer({
+          url:
+            "http://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/FreeFillStations/FeatureServer/0",
+            outFields: ["*"],
+            popupTemplate: template
+        });
+        map.add(featureLayer);
+        var featureTable = new FeatureLayer({
+          url:
+            "https://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/FreeFull/FeatureServer/0",
+          outFields: ["*"],
+          id: 'fillTable'
+        });
+        view.popup.on("trigger-action", (event) => {
+          console.log(featureTable)
+          if (event.action.id === "fill-this") {
+           fillThis(event.target.view, featureTable, featureLayer);
+          } 
+       });
+
+
+      });
+    
+      function fillThis(view, featureTable, featureLayer){
+
+        var feature = {attributes: {SiteID: view.popup.selectedFeature.attributes.ObjectId, SiteName: view.popup.selectedFeature.attributes.SiteName, FillTime: new Date()}}
+        featureTable.applyEdits({addFeatures: [feature]}).then(result => {
+          //here is the icon we want the popup to turn into after they fill up
+          document.getElementsByClassName("esri-popup__icon esri-popup__action-image")[0].
+          style.backgroundImage = 'url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnqapAVA0jyYyBXUWH8Laamsxp05nTxTANZvkZI1Uc7eUn7gfKtQ")'
+          console.log(result);
+        });
+       }
+
+  </script>
+
+</head>
+<body>
+  <div id="viewDiv"></div>
+  
+</html>
