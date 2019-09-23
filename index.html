@@ -19,7 +19,7 @@
     />
 
   <script src="https://js.arcgis.com/4.12/"></script>
-  <style>
+ <style>
     html,
     body,
     #viewDiv {
@@ -28,6 +28,52 @@
       height: 100%;
       width: 100%;
     }
+
+    .flex-container {
+        display: flex;
+      }
+
+      .flex-container .col {
+  margin: 0;
+   padding: 20px;
+   width: 49%;
+}
+
+  .flex-container .col img {
+    float: right;
+  }     
+
+    .freefill {
+      background: #01426A;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+      .freefill .col h2 {
+     font-family: 'Montserrat', sans-serif;
+     font-weight: 400;
+     color: #82C1D8;
+     padding: 15px;
+     margin: 0;
+     display: inline-block;
+    }
+s
+      .freefill .col h2 span.weight {
+     font-weight: 600;
+    }
+      .freefill .col h2 span.white {
+     color: #ffffff;
+    }
+
+    .esri-popup__header {
+      background: #009CBD;
+      color:#ffffff;
+    }
+    .esri-popup__content {
+      padding: 15px;
+           font-family: 'Montserrat', sans-serif;
+
+    }
+
   </style>
 
   <script>
