@@ -168,6 +168,15 @@
             }
            }
         });
+        
+         var locateBtn = new Locate({
+          view: view
+        });
+
+        // Add the locate widget to the top left corner of the view
+        view.ui.add(locateBtn, {
+          position: "top-left"
+        });
 
         var iFilledAction = {
           title: "I Filled Up!",
