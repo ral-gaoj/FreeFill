@@ -12,15 +12,11 @@
       rel="stylesheet"
       href="https://js.arcgis.com/4.12/esri/themes/light/main.css"
     />
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,600,600i,800,800i&display=swap" rel="stylesheet">
-    <link
-    rel="icon"
-      type="image/ico"
-      href="https://raleighnc.gov/cor-layout/content/static/styles/images/favicon.ico"
-    />
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,600,600i,800,800i&display=swap" rel="stylesheet">
 
-  <script src="https://js.arcgis.com/4.12/"></script>
- <style>
+
+  <script src="http://js.arcgis.com/4.12/"></script>
+  <style>
     html,
     body,
     #viewDiv {
@@ -28,41 +24,87 @@
       margin: 0;
       height: 100%;
       width: 100%;
+      border: 0;
+    }
+    .wrapper {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header, .footer {
+      width: 100%;
+      height: 10%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 100%;
+      height: 80%;
+      margin: 0;
+      padding: 0;
     }
 
     .flex-container {
-        display: flex;
-      }
+      display: flex;
+    }
 
-      .flex-container .col {
-  margin: 0;
-   padding: 20px;
-   width: 49%;
-}
+    .flex-container .col {
+      margin: 0;
+      width: 100%;
+    }
 
-  .flex-container .col img {
-    float: right;
-  }     
+    .padding {padding: 10px;}
+  
+    .img-right {float: right;}
+    . 
+
+    .img-left {float: left;}
 
     .freefill {
       background: #01426A;
       font-family: 'Montserrat', sans-serif;
+      height: 100%;
     }
 
-      .freefill .col h2 {
-     font-family: 'Montserrat', sans-serif;
-     font-weight: 400;
-     color: #82C1D8;
-     padding: 15px;
-     margin: 0;
-     display: inline-block;
+    .freefill .col h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      color: #82C1D8;
+      margin: 0;
+      display: inline-block;
+      padding: 0 15px;
     }
-s
-      .freefill .col h2 span.weight {
-     font-weight: 600;
+    .freefill .col p {
+      color:#ffffff;
+      padding: 0 15px;
+      font-size: 10pt;
+
     }
-      .freefill .col h2 span.white {
-     color: #ffffff;
+
+    .freefill .col p a, .freefill .col p a:visited {
+      color:#82C1D8;
+      text-decoration: none;
+      font-size: 16pt;
+      transition: all .5s ease;
+      padding: 5px;
+    }
+
+    .freefill .col p a:hover {
+      color:#ffffff;
+      background: #82C1D8;
+    }
+
+    esri-popup__icon esri-icon-zoom-in-magnifying-glass
+
+
+    .freefill .col h2 span.weight {
+      font-weight: 600;
+    }
+    .freefill .col h2 span.white {
+      color: #ffffff;
     }
 
     .esri-popup__header {
@@ -71,9 +113,31 @@ s
     }
     .esri-popup__content {
       padding: 15px;
-           font-family: 'Montserrat', sans-serif;
+      font-family: 'Montserrat', sans-serif;
 
     }
+    
+
+    .esri-popup__button {
+      color:#ccc;
+    }
+
+    .esri-view-width-less-than-medium .esri-popup__action-text {display:inline;}
+
+@media only screen and (max-width: 544px) {
+  
+  .esri-view-width-xsmall .esri-popup--is-docked-top-center .esri-popup__main-container, .esri-view-width-xsmall .esri-popup--is-docked-bottom-center .esri-popup__main-container {
+    width: 100%;
+    max-height: 120px;
+    padding: 4px 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+}
+
+
 
   </style>
 
@@ -94,7 +158,9 @@ s
           container: "viewDiv",
           map: map,
           center: [-78.638, 35.779],
-          zoom: 13
+          zoom: 12,
+          
+          
         });
 
         var iFilledAction = {
@@ -102,20 +168,20 @@ s
           id: "fill-this",
           image:
             //"https://developers.arcgis.com/javascript/latest/sample-code/popup-actions/live/Measure_Distance16.png"
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvVe3mBg6QhfAgUskwB78LQ89K4PBYVLd2q8Az_zbaHwfbDxS3"
+            "https://raleighncgov.sharepoint.com/:i:/r/sites/Public-Site-Files/COR27/Documents/FreeFill/water-icon-01-01.png?csf=1&e=ZptUQc"
         };
-       
+        
 
         var template = {
           // autocasts as new PopupTemplate()
           title: "{SiteName}",
-          content: "Hours: {FillTime}",
+          content: "Hours: {Hours}",
           actions: [iFilledAction]
         };
 
         var featureLayer = new FeatureLayer({
           url:
-            "https://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/FreeFillStations/FeatureServer/0",
+            "http://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/FreeFillStations/FeatureServer/0",
             outFields: ["*"],
             popupTemplate: template
         });
@@ -124,34 +190,39 @@ s
           url:
             "https://services.arcgis.com/v400IkDOw1ad7Yad/arcgis/rest/services/FreeFull/FeatureServer/0",
           outFields: ["*"],
-          id: 'fillTable'
+          id: 'fillTable',
+          //popupTemplate: template
         });
+
         view.popup.on("trigger-action", (event) => {
           console.log(featureTable)
           if (event.action.id === "fill-this") {
-           fillThis(event.target.view, featureTable, featureLayer);
+           fillThis(event.target.view, featureTable);
           } 
        });
 
 
       });
     
-      function fillThis(view, featureTable, featureLayer){
+      function fillThis(view, featureTable){
 
         var feature = {attributes: {SiteID: view.popup.selectedFeature.attributes.ObjectId, SiteName: view.popup.selectedFeature.attributes.SiteName, FillTime: new Date()}}
         featureTable.applyEdits({addFeatures: [feature]}).then(result => {
           //here is the icon we want the popup to turn into after they fill up
           document.getElementsByClassName("esri-popup__icon esri-popup__action-image")[0].
           style.backgroundImage = 'url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnqapAVA0jyYyBXUWH8Laamsxp05nTxTANZvkZI1Uc7eUn7gfKtQ")'
+          document.getElementsByClassName("esri-popup__action-text")[0].innerText
+          = "Thanks"
           console.log(result);
         });
        }
-
   </script>
 
 </head>
+
 <body>
- <div class="wrapper">
+
+  <div class="wrapper">
     <div class="header">
        <div class="freefill">
     <div class="flex-container">
