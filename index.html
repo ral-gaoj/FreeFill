@@ -229,7 +229,8 @@
         featureTable.applyEdits({addFeatures: [feature]}).then(result => {
           //here is the icon we want the popup to turn into after they fill up
           document.getElementsByClassName("esri-popup__icon esri-popup__action-image")[0].
-          style.backgroundImage = 'url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnqapAVA0jyYyBXUWH8Laamsxp05nTxTANZvkZI1Uc7eUn7gfKtQ")'
+          //style.backgroundImage = 'url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnqapAVA0jyYyBXUWH8Laamsxp05nTxTANZvkZI1Uc7eUn7gfKtQ")'
+          style.backgroundImage = 'url("https://cdn2.iconfinder.com/data/icons/toolbar-signs-2/512/checkbox_form_unchecked_tick-512.png")'
           document.getElementsByClassName("esri-popup__action-text")[0].innerText
           = "Thanks"
           console.log(result);
